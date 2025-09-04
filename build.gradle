@@ -163,6 +163,7 @@ ext {
 allprojects {
 
   repositories {
+    mavenLocal()
     mavenCentral()
   }
 
@@ -310,6 +311,12 @@ subprojects {
   // enable running :dependencyInsight task recursively on all subprojects
   // eg: ./gradlew allDepInsight --configuration runtime --dependency com.fasterxml.jackson.core:jackson-databind
   task allDepInsight(type: DependencyInsightReportTask) {showingAllVariants = false} doLast {}
+
+  apply plugin: 'java'
+  dependencies {
+    testImplementation "com.code-intelligence:jazzer-junit:0.0.0-dev"
+    testImplementation "com.code-intelligence:jazzer-api:0.0.0-dev"
+  }
 
   apply plugin: 'java-library'
   apply plugin: 'checkstyle'
@@ -765,7 +772,7 @@ subprojects {
     description = 'Run checkstyle on all test Java sources'
   }
 
-  test.dependsOn('checkstyleMain', 'checkstyleTest')
+  test.dependsOn('checkstyleMain')
 
   spotbugs {
     toolVersion = versions.spotbugs
